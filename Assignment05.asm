@@ -1,0 +1,376 @@
+.MODEL SMALL
+.STACK 100H
+.DATA
+
+CC DB 0 
+CC3 DB 0
+CC4 DW 0
+CC5 DW 0 
+CC2 DW 0
+
+
+SSFINAL DB 00111110b,01000001b,01000001b,01000001b,00111110b,01111110b,00001001b,00001001b,00001001b,01111110b,01000010b,01100001b,01010001b,01001001b,01000110b,01111110b,00001001b,00001001b,00001001b,01111110b,00111110b,01000001b,01000001b,01000001b,00111110b,00000110b,01001001b,01001001b,01001001b,00110000b
+
+ADO DW 2002H,2001H,2000H,2000H,2000H,2000H,2000H,2001H,2002H,2003H,2004H,2004H,2004H,2004H,2004H
+
+DTTWO DB 00000010b,00000001b,00000001b,00000001b,00000010b,00000110b,00001001b,00010001b,00100001b,01000010b,01100001b,01010001b,01001001b,01000110b
+
+ADA DW 2005h,2005h,2005h,2005h,2005h,2005h,2006h,2007h,2008h,2009h,2009h,2009h,2009h,2009h,2009h,2006h,2007h,2008h
+
+DTS DB 00000001b,00000001b,00000001b,00000010b,00000110b,00001001b,00001001b,00001001b,00010000b,00110000b,01001001b,01001001b,01001001b
+
+ADTWO DW 200Ah,200Bh,200Ch,200Dh,200Eh,200Eh,200Dh,200Ch,200Bh,200Ah,200Bh,200Ch,200Dh,200Eh 
+ 
+DTA DB 01000000b,01100000b,01110000b,01111000b,01111100b,01111110b,00000001b,00000001b,00000001b,00000010b,00000110b,00001110b,00011110b,00111110b,01111110b,00001001b,00001001b,00001001b
+
+SSS DB 00000001b,00100001b,00110001b,00111001b,00111101b,00111111b  
+
+SSTWO DB 00000001b,00000011b,01000011b,01000011b,01010011b,01011011b
+  
+DTO DB 00000001b,00000001b,00000010b,00000110b,00001110b,00011110b,00111110b,01000001b,01000001b,01000001b,00100000b,00110000b,00111000b,00111100b,00111110b
+
+ADAA DW 200FH,200FH,200FH,200FH,200FH,200FH,2010H,2011H,2012H,2013H,2013H,2013H,2013H,2013H,2013H,2010H,2011H,2012H
+
+ADOO DW 2016H,2015H,2014H,2014H,2014H,2014H,2014H,2015H,2016H,2017H,2018H,2018H,2018H,2018H,2018H
+
+  
+ADS DW 201CH,201Bh,201Ah,2019H,2019H,201AH,201BH,201CH,201DH,201DH,201CH,201BH,201AH
+
+
+ 
+.CODE
+
+
+
+   MAIN PROC 
+      
+    MOV AX,@DATA
+    MOV DS,AX
+    MOV AX,80H 
+    OUT 1FH,AL 
+   
+    
+     
+        
+    AND SI,0 
+    AND BX,0
+    AND CC,0
+    MAINFUN2:
+    MOV DX,ADO[BX]
+    MOV AL,DTO[SI]
+    OUT DX,AL
+    INC BX
+    INC BX
+    INC SI
+     
+    ;Delay code
+    MOV CX,30
+    FOR42: LOOP FOR42
+    
+    CMP CC,15 
+    JE PRINT_A
+    INC CC
+    JMP MAINFUN2
+    
+    
+    PRINT_A:
+    MOV DX,2070H
+    MOV AL,00000001H
+    OUT DX,AL
+    AND SI,0
+    AND BX,0
+    AND CC,0
+    MOV DX,2030H
+    MM:
+    
+    MOV AL,SSS[SI]  
+    OUT DX,AL
+    INC SI 
+    MOV CX,30
+    FOR1: LOOP FOR1
+    CMP CC,5
+    JE PPRE_S
+    INC CC
+    JMP MM
+    
+    
+    
+    
+    PPRE_S:
+    
+    AND SI,0 
+    AND BX,0
+    AND CC,0
+    
+    MAINFUN:
+    MOV DX,ADA[BX]
+    MOV AL,DTA[SI]
+    OUT DX,AL
+    INC BX
+    INC BX
+    INC SI
+    ;Delay code  
+    MOV CX,30
+    FOR41: LOOP FOR41
+    
+    
+    CMP CC,18 
+    
+     
+    JE PRINT_2
+    INC CC    
+    JMP MAINFUN
+    
+    
+    PRINT_2:
+    
+    
+    
+    
+    
+    
+    
+     
+    AND SI,0 
+    AND BX,0
+    AND CC,0
+    MAINFUN3:
+    MOV DX,ADTWO[BX]
+    MOV AL,DTTWO[SI]
+    OUT DX,AL
+    INC BX
+    INC BX
+    INC SI  
+    ;Delay code
+    MOV CX,30
+    FOR43: LOOP FOR43
+    
+    
+    CMP CC,13 
+    
+     
+    JE PRINT_AA
+    INC CC    
+    JMP MAINFUN3  
+    
+    
+    PRINT_AA:
+    MOV DX,2070H
+    MOV AL,00000011H
+    OUT DX,AL
+    
+    
+    AND SI,0 
+    AND BX,0
+    AND CC,0
+    
+    
+    MOV DX,2031H
+    MMM:
+    
+    MOV AL,SSTWO[SI]  
+    OUT DX,AL
+    INC SI 
+    MOV CX,30
+    FOR2: LOOP FOR2
+    CMP CC,5
+    JE PPRE_SS
+    INC CC
+    JMP MMM
+    
+    PPRE_SS:
+    AND SI,0 
+    AND BX,0
+    AND CC,0
+    MAINFUN4:
+    MOV DX,ADAA[BX]
+    MOV AL,DTA[SI]
+    OUT DX,AL
+    INC BX
+    INC BX
+    INC SI  
+    ;Delay code
+    MOV CX,30
+    FOR44: LOOP FOR44
+    
+    
+    CMP CC,17 
+    
+     
+    JE PRINT_OO
+    INC CC    
+    JMP MAINFUN4
+    
+    PRINT_OO:
+    AND SI,0 
+    AND BX,0
+    AND CC,0
+    MAINFUN5:
+    MOV DX,ADOO[BX]
+    MOV AL,DTO[SI]
+    OUT DX,AL
+    INC BX
+    INC BX
+    INC SI  
+    ;Delay code
+    MOV CX,30
+    FOR45: LOOP FOR45
+    
+    
+    CMP CC,14 
+    
+     
+    JE PRINT_S
+    INC CC    
+    JMP MAINFUN5
+    
+    
+    PRINT_S: 
+    
+    AND SI,0
+    AND BX,0
+    AND CC,0
+    MOV DX,2032H
+    MMMM:
+    
+    MOV AL,SSS[SI]  
+    OUT DX,AL
+    INC SI 
+    MOV CX,30
+    FOR3: LOOP FOR3
+    CMP CC,5
+    JE PPRE_SSS
+    INC CC
+    JMP MMMM
+    
+    PPRE_SSS:
+    AND SI,0 
+    AND BX,0
+    AND CC,0
+    MAINFUN6:
+    MOV DX,ADS[BX]
+    MOV AL,DTS[SI]
+    OUT DX,AL
+    INC BX
+    INC BX
+    INC SI  
+    ;Delay code
+    MOV CX,30
+    FOR46: LOOP FOR46
+    
+    
+    CMP CC,13 
+    
+     
+    JE MOVERS
+    INC CC    
+    JMP MAINFUN6
+    
+    
+    
+    
+    
+    
+    MOVERS:
+    AND SI,0
+    AND BX,0
+    AND CC,0
+    AND CC2,0
+    AND CC3,0
+    
+    
+    
+    L1:
+    
+    CMP CC,5
+    JE ENDCODE  
+    ADD CC,1
+    AND SI,0
+    AND BX,0
+    AND CX,0
+    AND CC2,0
+    AND CC3,0
+    AND CC4,0
+    AND CC5,0
+    
+    
+      L2:
+      
+      CMP CC2,30
+      JE L1 
+      ADD CC2,1
+      ;INC CC2
+      AND SI,0
+      AND BX,0
+      AND CX,0 
+      AND CC4,0
+      
+      
+      AND CC3,0
+      OR CC4,2000H
+      OR SI,CC2 
+      
+      L3:
+      
+         MOV DX,CC4
+         MOV AL,SSFINAL[SI]
+         OUT DX,AL 
+      
+         CMP CC3,29
+         JGE L2
+         ADD CC4,1
+         INC SI
+         ADD CC3,1
+         CMP SI,30
+         JGE JJ
+         CMP CC3,30
+         JGE L2
+         JMP L3
+      
+      
+    
+    
+    JJ:
+    AND SI,0
+    JMP L3
+     
+   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+         
+         
+        
+   
+
+ENDCODE:
+MAIN ENDP 
+ENDP MAIN
+
+    
+
+
+
+
+
+
+
